@@ -5,6 +5,7 @@ import connectDb from './config/db.js'
 import './config/instrument.js'
 import * as Sentry from "@sentry/node"
 import { clerkWebhooks } from './controllers/webhooks.js'
+import bodyParser from 'body-parser'
 
 const app = express()
 
@@ -20,7 +21,7 @@ app.get("/", function rootHandler(req, res) {
 app.get("/debug-sentry", function mainHandler(req, res) {
     throw new Error("My first Sentry error!");
 });
-app.post('/webhooks', clerkWebhooks)
+app.post('/clerk-webhook', bodyParser.raw({ type: 'application/json' }), clerkWebhooks);
 
 // Middlewares
 
